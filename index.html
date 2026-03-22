@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MC Tiers</title>
+<style>
+* { box-sizing: border-box; }
+body { margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0b0f1a, #111827); color: #e5e7eb; }
+header { display:flex; justify-content:space-between; align-items:center; background: rgba(2,6,23,0.9); backdrop-filter: blur(10px); padding:20px 30px; font-size:22px; font-weight:bold; border-bottom:1px solid #1f2937; }
+.ip-container { display:flex; flex-direction:column; align-items:center; }
+.ip-label { font-size:14px; color:#9ca3af; margin-bottom:4px; text-align:center; }
+.ip-box { background:#020617; border:1px solid #1f2937; padding:6px 10px; border-radius:10px; font-size:13px; cursor:pointer; transition:0.2s; }
+.ip-box:hover { background:#1f2937; }
+.container { padding:30px; max-width:1400px; margin:auto; }
+.player-card { display:flex; justify-content:space-between; align-items:flex-start; background:#020617; padding:15px 20px; border-radius:14px; margin-bottom:12px; box-shadow:0 4px 20px rgba(0,0,0,0.4); border:1px solid #1f2937; width:100%; }
+.player-info { display:flex; flex-direction:column; min-width:200px; }
+.player-top { display:flex; align-items:center; gap:6px; margin-bottom:2px; } 
+.player-number { font-weight:bold; width:24px; text-align:right; }
+.steve-img { width:24px; height:24px; border-radius:4px; }
+.player-name { font-weight:600; }
+.role-box { color:#e5e7eb; font-size:11px; padding:3px 6px; border-radius:4px; text-align:center; min-width:50px; margin-bottom:6px; }
+.role-kurucu { background:#ef4444; } /* kırmızı */
+.role-admin { background:#f59e0b; } /* turuncu */
+.role-helper { background:#3b82f6; } /* mavi */
+.role-media { background:#f472b6; } /* pembe */
+.role-halk { background:#6b7280; } /* gri */
+.role-plus { background:#22c55e; } /* yeşil */
+.tiers-container { display:flex; gap:8px; align-items:flex-start; }
+.eu { background:red; color:white; font-size:11px; padding:4px 8px; border-radius:6px; font-weight:bold; flex-shrink:0; display:flex; align-items:center; justify-content:center; min-height:34px; }
+.tiers { display:flex; gap:8px; flex-wrap: nowrap; overflow-x: auto; } 
+.tier-box { padding:6px 10px; border-radius:8px; font-size:12px; font-weight:600; color:white; white-space: nowrap; flex-shrink:0; }
+.t1 { background:#22c55e; } .t2 { background:#3b82f6; } .t3 { background:#f59e0b; } .t4 { background:#ef4444; } .t5 { background:#a855f7; } .t6 { background:#06b6d4; } .t7 { background:#84cc16; } .t8 { background:#f43f5e; } .t9 { background:#eab308; }
+</style>
+</head>
+<body>
+
+<header>
+  <div>MC Tiers</div>
+  <div class="ip-container">
+    <div class="ip-label">Katılmak için:</div>
+    <div class="ip-box" onclick="copyIP()">rootnw.falix.pro</div>
+  </div>
+</header>
+
+<div class="container" id="container"></div>
+
+<script>
+const container = document.getElementById('container');
+
+const playerNames = [
+  'DrRoot','GamerPug','Konya_zencisi_','BlockBreaker','PixelMage','CreeperSlayer','EnderKnight','RedstoneWizard','DiamondMiner',
+  'NetherRider','ZombieHunter','LavaWalker','CraftMaster','SkyBuilder','IronFist','PotionKing','GrassRunner','StoneSmith',
+  'WolfTamer','MineLord','ObsidianLord','GoldenPick','EmeraldCrafter','NetMiner','RedstoneHero','CaveCrawler','LavaHunter','MineSlayer',
+  'BlockMaster','EnderSeeker','DiamondKing','PotionLord','GrassRunner99','StoneBreaker','WolfTamer2','MineLord2','ObsidianLord2',
+  'GoldenPick2','EmeraldCrafter2','PixelWizard','CreeperHunter','EnderMage','RedstoneKing','DiamondMiner2','NetherRider2','ZombieHunter2',
+  'LavaWalker2','CraftMaster2','SkyBuilder2','IronFist2','PotionKing2','GrassRunner2','StoneSmith2','WolfTamer3','MineLord3','ObsidianLord3',
+  'GoldenPick3','EmeraldCrafter3','BlockBreaker2','PixelMage2','CreeperSlayer2','EnderKnight2','RedstoneWizard2','DiamondMiner3','NetherRider3',
+  'ZombieHunter3','LavaWalker3','CraftMaster3','SkyBuilder3','IronFist3','PotionKing3','GrassRunner3','StoneSmith3','WolfTamer4','MineLord4',
+  'ObsidianLord4','GoldenPick4','EmeraldCrafter4','BlockBreaker3','PixelMage3','CreeperSlayer3','EnderKnight3','RedstoneWizard3','DiamondMiner4',
+  'NetherRider4','ZombieHunter4','LavaWalker4','CraftMaster4','SkyBuilder4','IronFist4','PotionKing4','GrassRunner4','StoneSmith4','WolfTamer5',
+  'MineLord5','ObsidianLord5','GoldenPick5','EmeraldCrafter5'
+];
+
+const tierNames = ['VANILLA','CRYSTAL','AXE','SWORD','UHC','POT','NETOP','MACE','SMP'];
+const tierColors = ['t1','t2','t3','t4','t5','t6','t7','t8','t9'];
+
+function getRole(i){
+  if(i===0) return 'Kurucu';
+  if(i===1) return 'Admin';
+  if(i===2) return 'Helper';
+  if([3,4,6].includes(i)) return 'Media';
+  if(i>=7 && i<=12) return '+';
+  return 'Halk';
+}
+
+function getRoleClass(role){
+  switch(role){
+    case 'Kurucu': return 'role-kurucu';
+    case 'Admin': return 'role-admin';
+    case 'Helper': return 'role-helper';
+    case 'Media': return 'role-media';
+    case 'Halk': return 'role-halk';
+    case '+': return 'role-plus';
+  }
+}
+
+for(let i=0;i<99;i++){
+  const card = document.createElement('div');
+  card.className = 'player-card';
+
+  const playerInfo = document.createElement('div');
+  playerInfo.className = 'player-info';
+
+  // Üst satır: sıra numarası, Steve ve isim yan yana
+  const topRow = document.createElement('div');
+  topRow.className = 'player-top';
+  
+  const playerNumber = document.createElement('div');
+  playerNumber.className = 'player-number';
+  playerNumber.innerText = (i+1)+'.';
+  topRow.appendChild(playerNumber);
+
+  const steveImg = document.createElement('img');
+  steveImg.src = 'http://textures.minecraft.net/texture/28e4606d638ad632a4b0becbf00dccf35934af169a2cf0d2be890b1cb19c5bc';
+  steveImg.alt = 'Steve';
+  steveImg.className = 'steve-img';
+  topRow.appendChild(steveImg);
+
+  const nameText = document.createElement('span');
+  nameText.className = 'player-name';
+  nameText.innerText = playerNames[i];
+  topRow.appendChild(nameText);
+
+  playerInfo.appendChild(topRow);
+
+  // Rol kutusu isim altına
+  const role = getRole(i);
+  const roleBox = document.createElement('div');
+  roleBox.className = 'role-box ' + getRoleClass(role);
+  roleBox.innerText = role;
+  playerInfo.appendChild(roleBox);
+
+  // Tierler ve EU
+  const tiersContainer = document.createElement('div');
+  tiersContainer.className = 'tiers-container';
+
+  const euDiv = document.createElement('div');
+  euDiv.className = 'eu';
+  euDiv.innerText = 'EU';
+  tiersContainer.appendChild(euDiv);
+
+  const tierWrap = document.createElement('div');
+  tierWrap.className = 'tiers';
+
+  for(let j=0;j<9;j++){
+    const tierBox = document.createElement('div');
+    tierBox.className = 'tier-box ' + tierColors[j];
+    tierBox.innerText = tierNames[j] + ' HT' + (i+1);
+    tierWrap.appendChild(tierBox);
+  }
+
+  tiersContainer.appendChild(tierWrap);
+  card.appendChild(playerInfo);
+  card.appendChild(tiersContainer);
+  container.appendChild(card);
+}
+
+function copyIP(){
+  navigator.clipboard.writeText("rootnw.falix.pro");
+  alert("IP kopyalandı: rootnw.falix.pro");
+}
+</script>
+
+</body>
+</html>
