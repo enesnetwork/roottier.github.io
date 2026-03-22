@@ -13,19 +13,21 @@ header { display:flex; justify-content:space-between; align-items:center; backgr
 .ip-box { background:#020617; border:1px solid #1f2937; padding:6px 10px; border-radius:10px; font-size:13px; cursor:pointer; transition:0.2s; }
 .ip-box:hover { background:#1f2937; }
 .container { padding:30px; max-width:1400px; margin:auto; }
-.player-card { display:flex; justify-content:space-between; align-items:flex-start; background:#020617; padding:15px 20px; border-radius:14px; margin-bottom:12px; box-shadow:0 4px 20px rgba(0,0,0,0.4); border:1px solid #1f2937; width:100%; }
+.player-card { display:flex; justify-content:space-between; align-items:flex-start; background:#020617; padding:15px 20px; border-radius:14px; margin-bottom:12px; box-shadow:0 4px 20px rgba(0,0,0,0.4); border:1px solid #1f2937; width:100%; transition: all 0.4s ease; }
+.player-card:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(255,255,255,0.3); background: linear-gradient(45deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2)); }
 .player-info { display:flex; flex-direction:column; min-width:200px; }
 .player-top { display:flex; align-items:center; gap:6px; margin-bottom:2px; } 
 .player-number { font-weight:bold; width:24px; text-align:right; }
 .steve-img { width:24px; height:24px; border-radius:4px; }
 .player-name { font-weight:600; }
-.role-box { color:#e5e7eb; font-size:11px; padding:3px 6px; border-radius:4px; text-align:center; min-width:50px; margin-bottom:6px; }
-.role-kurucu { background:#ef4444; } /* kırmızı */
-.role-admin { background:#f59e0b; } /* turuncu */
-.role-helper { background:#3b82f6; } /* mavi */
-.role-media { background:#f472b6; } /* pembe */
-.role-halk { background:#6b7280; } /* gri */
-.role-plus { background:#22c55e; } /* yeşil */
+.role-box { color:#e5e7eb; font-size:11px; padding:3px 6px; border-radius:4px; text-align:center; min-width:50px; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:4px; transition: all 0.3s ease; cursor:pointer; }
+.role-box:hover { transform: scale(1.1); box-shadow: 0 0 8px rgba(255,255,255,0.6); }
+.role-kurucu { background:#ef4444; } 
+.role-admin { background:#f59e0b; } 
+.role-helper { background:#3b82f6; } 
+.role-media { background:#f472b6; } 
+.role-halk { background:#6b7280; } 
+.role-plus { background:#22c55e; } 
 .tiers-container { display:flex; gap:8px; align-items:flex-start; }
 .eu { background:red; color:white; font-size:11px; padding:4px 8px; border-radius:6px; font-weight:bold; flex-shrink:0; display:flex; align-items:center; justify-content:center; min-height:34px; }
 .tiers { display:flex; gap:8px; flex-wrap: nowrap; overflow-x: auto; } 
@@ -85,6 +87,17 @@ function getRoleClass(role){
   }
 }
 
+function getRoleIcon(role){
+  switch(role){
+    case 'Kurucu': return '👑';
+    case 'Admin': return '🔥';
+    case 'Helper': return '🛡️';
+    case 'Media': return '🎥';
+    case 'Halk': return '👤';
+    case '+': return '⭐';
+  }
+}
+
 for(let i=0;i<99;i++){
   const card = document.createElement('div');
   card.className = 'player-card';
@@ -92,7 +105,6 @@ for(let i=0;i<99;i++){
   const playerInfo = document.createElement('div');
   playerInfo.className = 'player-info';
 
-  // Üst satır: sıra numarası, Steve ve isim yan yana
   const topRow = document.createElement('div');
   topRow.className = 'player-top';
   
@@ -102,7 +114,7 @@ for(let i=0;i<99;i++){
   topRow.appendChild(playerNumber);
 
   const steveImg = document.createElement('img');
-  steveImg.src = 'http://textures.minecraft.net/texture/28e4606d638ad632a4b0becbf00dccf35934af169a2cf0d2be890b1cb19c5bc';
+  steveImg.src = 'https://th.bing.com/th/id/OIP.WBbn2h6kmdFQiCJm9b_9rAHaGu?w=203&h=184&c=7&r=0&o=7&pid=1.7&rm=3';
   steveImg.alt = 'Steve';
   steveImg.className = 'steve-img';
   topRow.appendChild(steveImg);
@@ -114,14 +126,12 @@ for(let i=0;i<99;i++){
 
   playerInfo.appendChild(topRow);
 
-  // Rol kutusu isim altına
   const role = getRole(i);
   const roleBox = document.createElement('div');
   roleBox.className = 'role-box ' + getRoleClass(role);
-  roleBox.innerText = role;
+  roleBox.innerHTML = getRoleIcon(role) + ' ' + role;
   playerInfo.appendChild(roleBox);
 
-  // Tierler ve EU
   const tiersContainer = document.createElement('div');
   tiersContainer.className = 'tiers-container';
 
