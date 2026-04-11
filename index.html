@@ -1,166 +1,291 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>RootSMP Tiers List</title>
-<style>
-* { box-sizing: border-box; }
-body { margin:0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #0b0f1a, #111827); color: #e5e7eb; }
-header { display:flex; justify-content:space-between; align-items:center; background: rgba(2,6,23,0.9); backdrop-filter: blur(10px); padding:20px 30px; font-size:22px; font-weight:bold; border-bottom:1px solid #1f2937; }
-.ip-container { display:flex; flex-direction:column; align-items:center; }
-.ip-label { font-size:14px; color:#9ca3af; margin-bottom:4px; text-align:center; }
-.ip-box { background:#020617; border:1px solid #1f2937; padding:6px 10px; border-radius:10px; font-size:13px; cursor:pointer; transition:0.2s; }
-.ip-box:hover { background:#1f2937; }
-.container { padding:30px; max-width:1400px; margin:auto; }
-.player-card { display:flex; justify-content:space-between; align-items:flex-start; background:#020617; padding:15px 20px; border-radius:14px; margin-bottom:12px; box-shadow:0 4px 20px rgba(0,0,0,0.4); border:1px solid #1f2937; width:100%; transition: all 0.4s ease; }
-.player-card:hover { transform: scale(1.02); box-shadow: 0 8px 30px rgba(255,255,255,0.3); background: linear-gradient(45deg, rgba(255,255,255,0.05), rgba(0,0,0,0.2)); }
-.player-info { display:flex; flex-direction:column; min-width:200px; }
-.player-top { display:flex; align-items:center; gap:6px; margin-bottom:2px; } 
-.player-number { font-weight:bold; width:24px; text-align:right; }
-.steve-img { width:24px; height:24px; border-radius:4px; }
-.player-name { font-weight:600; }
-.role-box { color:#e5e7eb; font-size:11px; padding:3px 6px; border-radius:4px; text-align:center; min-width:50px; margin-bottom:6px; display:flex; align-items:center; justify-content:center; gap:4px; transition: all 0.3s ease; cursor:pointer; }
-.role-box:hover { transform: scale(1.1); box-shadow: 0 0 8px rgba(255,255,255,0.6); }
-.role-kurucu { background:#ef4444; } 
-.role-admin { background:#f59e0b; } 
-.role-helper { background:#3b82f6; } 
-.role-media { background:#f472b6; } 
-.role-halk { background:#6b7280; } 
-.role-plus { background:#22c55e; } 
-.tiers-container { display:flex; gap:8px; align-items:flex-start; }
-.eu { background:red; color:white; font-size:11px; padding:4px 8px; border-radius:6px; font-weight:bold; flex-shrink:0; display:flex; align-items:center; justify-content:center; min-height:34px; }
-.tiers { display:flex; gap:8px; flex-wrap: nowrap; overflow-x: auto; } 
-.tier-box { padding:6px 10px; border-radius:8px; font-size:12px; font-weight:600; color:white; white-space: nowrap; flex-shrink:0; }
-.t1 { background:#22c55e; } .t2 { background:#3b82f6; } .t3 { background:#f59e0b; } .t4 { background:#ef4444; } .t5 { background:#a855f7; } .t6 { background:#06b6d4; } .t7 { background:#84cc16; } .t8 { background:#f43f5e; } .t9 { background:#eab308; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ROOTSMP - Rankings</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Roboto+Mono:wght@400;600;700&display=swap');
+
+        :root {
+            --neon-green: #00ff9d;
+            --dark-bg: #0a0a0a;
+            --card-bg: #111111;
+        }
+
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+
+        body {
+            background: var(--dark-bg);
+            color: #fff;
+            font-family: 'Roboto Mono', monospace;
+            background-image: 
+                linear-gradient(rgba(0, 255, 157, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 255, 157, 0.03) 1px, transparent 1px);
+            background-size: 40px 40px;
+        }
+
+        header {
+            background: linear-gradient(180deg, #1a1a1a, #0a0a0a);
+            padding: 35px 0;
+            text-align: center;
+            border-bottom: 4px solid var(--neon-green);
+            box-shadow: 0 0 40px rgba(0, 255, 157, 0.5);
+        }
+
+        h1 {
+            font-family: 'Press Start 2P', cursive;
+            font-size: 3.6rem;
+            text-shadow: 0 0 25px var(--neon-green), 0 0 50px var(--neon-green);
+            animation: glow 2s infinite alternate;
+        }
+
+        .subtitle {
+            margin-top: 12px;
+            font-size: 1.25rem;
+            opacity: 0.9;
+        }
+
+        .server-info {
+            background: rgba(0, 255, 157, 0.1);
+            padding: 18px;
+            text-align: center;
+            font-size: 1.3rem;
+            border: 2px solid var(--neon-green);
+            margin: 30px auto;
+            max-width: 650px;
+            border-radius: 12px;
+            box-shadow: 0 0 30px rgba(0, 255, 157, 0.35);
+        }
+
+        nav {
+            background: #0f0f0f;
+            padding: 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            border-bottom: 1px solid #222;
+            height: 70px;
+        }
+
+        .leaderboard-container {
+            max-width: 1300px;
+            margin: 40px auto;
+            padding: 0 20px;
+        }
+
+        .leaderboard {
+            background: var(--card-bg);
+            border-radius: 14px;
+            overflow: hidden;
+            box-shadow: 0 0 50px rgba(0, 255, 157, 0.25);
+            border: 1px solid #222;
+        }
+
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+        }
+
+        th {
+            background: linear-gradient(#00cc7a, #008f55);
+            color: black;
+            padding: 22px 15px;
+            text-transform: uppercase;
+            font-size: 1.05rem;
+            letter-spacing: 1.5px;
+        }
+
+        td {
+            padding: 20px 15px;
+            border-bottom: 1px solid #222;
+            transition: all 0.35s ease;
+        }
+
+        tr:hover td {
+            background: rgba(0, 255, 157, 0.13);
+            transform: translateX(12px);
+        }
+
+        .rank {
+            font-size: 1.8rem;
+            font-weight: bold;
+            width: 90px;
+            text-align: center;
+        }
+
+        .player-cell {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .skin {
+            width: 58px;
+            height: 58px;
+            border: 3px solid var(--neon-green);
+            border-radius: 10px;
+            image-rendering: pixelated;
+            box-shadow: 0 0 25px rgba(0, 255, 157, 0.8);
+            transition: transform 0.4s ease;
+        }
+
+        tr:hover .skin {
+            transform: scale(1.2);
+        }
+
+        .player-info {
+            line-height: 1.5;
+        }
+
+        .username {
+            font-size: 1.25rem;
+            font-weight: 700;
+        }
+
+        .region {
+            font-size: 0.98rem;
+            color: var(--neon-green);
+            opacity: 0.92;
+        }
+
+        .points {
+            font-size: 1.4rem;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .tier-list {
+            font-size: 0.9rem;
+            line-height: 1.45;
+            opacity: 0.87;
+        }
+
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            background: #050505;
+            font-size: 0.95rem;
+            opacity: 0.7;
+            margin-top: 70px;
+        }
+
+        @keyframes glow {
+            from { text-shadow: 0 0 20px #00ff9d; }
+            to { text-shadow: 0 0 45px #00ff9d, 0 0 75px #00ff9d; }
+        }
+    </style>
 </head>
 <body>
 
-<header>
-  <div>RootSMP Tiers List</div>
-  <div class="ip-container">
-    <div class="ip-label">Katılmak için:</div>
-    <div class="ip-box" onclick="copyIP()">rootnw.falix.pro</div>
-  </div>
-</header>
+    <header>
+        <h1>ROOTSMP</h1>
+        <p class="subtitle">Minecraft PvP Rankings • 2026</p>
+    </header>
 
-<div class="container" id="container"></div>
+    <div class="server-info">
+        <strong>Server IP:</strong> <span style="color:var(--neon-green); font-weight: bold;">turkeyvanilla.aternos.me</span><br>
+        <strong>En iyi Minecraft combat oyuncularını burada gör!</strong>
+    </div>
 
-<script>
-const container = document.getElementById('container');
+    <nav></nav>
 
-const playerNames = [
-  'DrRoot','GamerPug','Konya_zencisi_','BlockBreaker','PixelMage','CreeperSlayer','EnderKnight','RedstoneWizard','DiamondMiner',
-  'NetherRider','ZombieHunter','LavaWalker','CraftMaster','SkyBuilder','IronFist','PotionKing','GrassRunner','StoneSmith',
-  'WolfTamer','MineLord','ObsidianLord','GoldenPick','EmeraldCrafter','NetMiner','RedstoneHero','CaveCrawler','LavaHunter','MineSlayer',
-  'BlockMaster','EnderSeeker','DiamondKing','PotionLord','GrassRunner99','StoneBreaker','WolfTamer2','MineLord2','ObsidianLord2',
-  'GoldenPick2','EmeraldCrafter2','PixelWizard','CreeperHunter','EnderMage','RedstoneKing','DiamondMiner2','NetherRider2','ZombieHunter2',
-  'LavaWalker2','CraftMaster2','SkyBuilder2','IronFist2','PotionKing2','GrassRunner2','StoneSmith2','WolfTamer3','MineLord3','ObsidianLord3',
-  'GoldenPick3','EmeraldCrafter3','BlockBreaker2','PixelMage2','CreeperSlayer2','EnderKnight2','RedstoneWizard2','DiamondMiner3','NetherRider3',
-  'ZombieHunter3','LavaWalker3','CraftMaster3','SkyBuilder3','IronFist3','PotionKing3','GrassRunner3','StoneSmith3','WolfTamer4','MineLord4',
-  'ObsidianLord4','GoldenPick4','EmeraldCrafter4','BlockBreaker3','PixelMage3','CreeperSlayer3','EnderKnight3','RedstoneWizard3','DiamondMiner4',
-  'NetherRider4','ZombieHunter4','LavaWalker4','CraftMaster4','SkyBuilder4','IronFist4','PotionKing4','GrassRunner4','StoneSmith4','WolfTamer5',
-  'MineLord5','ObsidianLord5','GoldenPick5','EmeraldCrafter5'
-];
+    <div class="leaderboard-container">
+        <div class="leaderboard">
+            <table>
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>PLAYER</th>
+                        <th>POINTS</th>
+                        <th>TIERS</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="rank">1</td>
+                        <td>
+                            <div class="player-cell">
+                                <img src="https://mc-heads.net/avatar/DrRoot/64" class="skin" alt="DrRoot">
+                                <div class="player-info">
+                                    <div class="username">DrRoot</div>
+                                    <div class="region">EU</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="points">217</td>
+                        <td><div class="tier-list">HT2 LT4 HT2 HT2 HT1 LT2 LT1 HT3</div></td>
+                    </tr>
+                    <tr>
+                        <td class="rank">2</td>
+                        <td>
+                            <div class="player-cell">
+                                <img src="https://mc-heads.net/avatar/4uidikonHD/64" class="skin" alt="4uidikonHD">
+                                <div class="player-info">
+                                    <div class="username">4uidikonHD</div>
+                                    <div class="region">EU</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="points">211</td>
+                        <td><div class="tier-list">HT2 LT4 HT1 HT2 LT2 LT3 HT1 HT3</div></td>
+                    </tr>
+                    <tr>
+                        <td class="rank">3</td>
+                        <td>
+                            <div class="player-cell">
+                                <img src="https://mc-heads.net/avatar/Lazzxy/64" class="skin" alt="Lazzxy">
+                                <div class="player-info">
+                                    <div class="username">Lazzxy</div>
+                                    <div class="region">EU</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="points">188</td>
+                        <td><div class="tier-list">HT2 N/A LT1 LT1 LT3 LT3 HT1 N/A</div></td>
+                    </tr>
+                    <tr>
+                        <td class="rank">4</td>
+                        <td>
+                            <div class="player-cell">
+                                <img src="https://mc-heads.net/avatar/HanabiPVP/64" class="skin" alt="HanabiPVP">
+                                <div class="player-info">
+                                    <div class="username">HanabiPVP</div>
+                                    <div class="region">NA</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="points">176</td>
+                        <td><div class="tier-list">HT1 LT2 HT3 LT1 HT2</div></td>
+                    </tr>
+                    <tr>
+                        <td class="rank">5</td>
+                        <td>
+                            <div class="player-cell">
+                                <img src="https://mc-heads.net/avatar/Player2/64" class="skin" alt="Player2">
+                                <div class="player-info">
+                                    <div class="username">Player2</div>
+                                    <div class="region">EU</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="points">169</td>
+                        <td><div class="tier-list">LT3 HT2 LT1 HT1 LT2</div></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-const tierNames = ['VANILLA','CRYSTAL','AXE','SWORD','UHC','POT','NETOP','MACE','SMP'];
-const tierColors = ['t1','t2','t3','t4','t5','t6','t7','t8','t9'];
-
-function getRole(i){
-  if(i===0) return 'Kurucu';
-  if(i===1) return 'Admin';
-  if(i===2) return 'Helper';
-  if([3,4,6].includes(i)) return 'Media';
-  if(i>=7 && i<=12) return '+';
-  return 'Halk';
-}
-
-function getRoleClass(role){
-  switch(role){
-    case 'Kurucu': return 'role-kurucu';
-    case 'Admin': return 'role-admin';
-    case 'Helper': return 'role-helper';
-    case 'Media': return 'role-media';
-    case 'Halk': return 'role-halk';
-    case '+': return 'role-plus';
-  }
-}
-
-function getRoleIcon(role){
-  switch(role){
-    case 'Kurucu': return '👑';
-    case 'Admin': return '🔥';
-    case 'Helper': return '🛡️';
-    case 'Media': return '🎥';
-    case 'Halk': return '👤';
-    case '+': return '⭐';
-  }
-}
-
-for(let i=0;i<99;i++){
-  const card = document.createElement('div');
-  card.className = 'player-card';
-
-  const playerInfo = document.createElement('div');
-  playerInfo.className = 'player-info';
-
-  const topRow = document.createElement('div');
-  topRow.className = 'player-top';
-  
-  const playerNumber = document.createElement('div');
-  playerNumber.className = 'player-number';
-  playerNumber.innerText = (i+1)+'.';
-  topRow.appendChild(playerNumber);
-
-  const steveImg = document.createElement('img');
-  steveImg.src = 'https://th.bing.com/th/id/OIP.WBbn2h6kmdFQiCJm9b_9rAHaGu?w=203&h=184&c=7&r=0&o=7&pid=1.7&rm=3';
-  steveImg.alt = 'Steve';
-  steveImg.className = 'steve-img';
-  topRow.appendChild(steveImg);
-
-  const nameText = document.createElement('span');
-  nameText.className = 'player-name';
-  nameText.innerText = playerNames[i];
-  topRow.appendChild(nameText);
-
-  playerInfo.appendChild(topRow);
-
-  const role = getRole(i);
-  const roleBox = document.createElement('div');
-  roleBox.className = 'role-box ' + getRoleClass(role);
-  roleBox.innerHTML = getRoleIcon(role) + ' ' + role;
-  playerInfo.appendChild(roleBox);
-
-  const tiersContainer = document.createElement('div');
-  tiersContainer.className = 'tiers-container';
-
-  const euDiv = document.createElement('div');
-  euDiv.className = 'eu';
-  euDiv.innerText = 'EU';
-  tiersContainer.appendChild(euDiv);
-
-  const tierWrap = document.createElement('div');
-  tierWrap.className = 'tiers';
-
-  for(let j=0;j<9;j++){
-    const tierBox = document.createElement('div');
-    tierBox.className = 'tier-box ' + tierColors[j];
-    tierBox.innerText = tierNames[j] + ' HT' + (i+1);
-    tierWrap.appendChild(tierBox);
-  }
-
-  tiersContainer.appendChild(tierWrap);
-  card.appendChild(playerInfo);
-  card.appendChild(tiersContainer);
-  container.appendChild(card);
-}
-
-function copyIP(){
-  navigator.clipboard.writeText("rootnw.falix.pro");
-  alert("IP kopyalandı: rootnw.falix.pro");
-}
-</script>
+    <footer>
+        © 2026 ROOTSMP Animasyonlu Kopya • Bu sadece görsel bir klondur<br>
+        Gerçek site: <a href="https://mctiers.com" style="color:var(--neon-green)">mctiers.com</a>
+    </footer>
 
 </body>
 </html>
